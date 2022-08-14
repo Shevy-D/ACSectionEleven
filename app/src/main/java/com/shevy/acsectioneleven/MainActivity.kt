@@ -1,12 +1,11 @@
 package com.shevy.acsectioneleven
 
-import android.content.Context
-import android.content.SharedPreferences
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.PersistableBundle
+import android.os.CountDownTimer
+import android.os.Handler
 import android.util.Log
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import com.shevy.acsectioneleven.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -18,14 +17,24 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val sharedPreference: SharedPreferences = this.getSharedPreferences("mySharedPreference", Context.MODE_PRIVATE)
-        val editor: SharedPreferences.Editor = sharedPreference.edit()
-        editor.putString("newHelloText", "Hello Shared Preferences")
-        //editor.remove("newHelloText")
-        //editor.clear()
-        editor.apply()
+        val myTimer: CountDownTimer = object : CountDownTimer(10000, 1000) {
+            override fun onTick(p0: Long) {
+                Log.d("myTimer", "${p0/1000} seconds left")
+            }
 
-        val textView = binding.textView
-        textView.text = sharedPreference.getString("newHelloText", "Default text")
+            override fun onFinish() {
+                Log.d("myTimer", "Finish!")
+            }
+        }
+        myTimer.start()
+
+/*        val handler = Handler()
+        val runnable: Runnable = object : Runnable {
+            override fun run() {
+                Log.d("Runnable", "Two seconds are passed")
+                handler.postDelayed(this, 2000)
+            }
+        }
+        handler.post(runnable)*/
     }
 }
