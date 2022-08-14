@@ -1,5 +1,7 @@
 package com.shevy.acsectioneleven
 
+import android.content.Context
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.PersistableBundle
@@ -16,17 +18,18 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        textView = binding.textView
+        val sharedPreference: SharedPreferences = this.getSharedPreferences("mySharedPreference", Context.MODE_PRIVATE)
+        val editor: SharedPreferences.Editor = sharedPreference.edit()
+        //editor.putString("newHelloText", "Hello Shared Preferences")
+        editor.remove("newHelloText")
+        //editor.clear()
+        editor.apply()
 
-        if (savedInstanceState != null) {
-            textView.text = savedInstanceState.getString("textToBundle")
-        }
-
-        Log.d("Lifecycle method", "onCreate()")
-        textView.append("onCreate() \n")
+        val textView = binding.textView
+        textView.text = sharedPreference.getString("newHelloText", "Default text")
     }
 
-    override fun onStart() {
+/*    override fun onStart() {
         super.onStart()
 
         Log.d("Lifecycle method", "onStart()")
@@ -67,5 +70,5 @@ class MainActivity : AppCompatActivity() {
         Log.d("onSaveInstanceState", "onSaveInstanceState()")
         textView.append("onSaveInstanceState() \n")
         outState.putString("textToBundle", textView.text.toString())
-    }
+    }*/
 }
