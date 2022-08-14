@@ -20,8 +20,8 @@ class MainActivity : AppCompatActivity() {
 
         val sharedPreference: SharedPreferences = this.getSharedPreferences("mySharedPreference", Context.MODE_PRIVATE)
         val editor: SharedPreferences.Editor = sharedPreference.edit()
-        //editor.putString("newHelloText", "Hello Shared Preferences")
-        editor.remove("newHelloText")
+        editor.putString("newHelloText", "Hello Shared Preferences")
+        //editor.remove("newHelloText")
         //editor.clear()
         editor.apply()
 
