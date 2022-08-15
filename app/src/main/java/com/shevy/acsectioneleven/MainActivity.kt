@@ -59,18 +59,13 @@ class MainActivity : AppCompatActivity() {
                         }
 
                         override fun onFinish() {
-                            Log.d("myTimer", "Finish!")
                             MediaPlayer.create(applicationContext, R.raw.music).start()
+                            reset()
                         }
                     }
                 countDownTimer.start()
             } else {
-                countDownTimer.cancel()
-                button.text = "Start"
-                timerSeekBar.isEnabled = true
-                isTimerOn = false
-                //textView.text = "01:00"
-                //timerSeekBar.progress = 60
+                reset()
             }
         }
     }
@@ -92,5 +87,14 @@ class MainActivity : AppCompatActivity() {
             seconds.toString()
         }
         textView.text = "$minutesString:$secondsString"
+    }
+
+    private fun reset(){
+        countDownTimer.cancel()
+        button.text = "Start"
+        timerSeekBar.isEnabled = true
+        isTimerOn = false
+        textView.text = "01:00"
+        timerSeekBar.progress = 60
     }
 }
