@@ -52,17 +52,17 @@ class MainActivity : AppCompatActivity() {
                 button.text = "Stop"
                 timerSeekBar.isEnabled = false
                 isTimerOn = true
-                countDownTimer = object : CountDownTimer(timerSeekBar.progress.toLong() * 1000, 1000) {
-                    override fun onTick(p0: Long) {
-                        updateTimer(p0)
-                    }
+                countDownTimer =
+                    object : CountDownTimer(timerSeekBar.progress.toLong() * 1000, 1000) {
+                        override fun onTick(p0: Long) {
+                            updateTimer(p0)
+                        }
 
-                    override fun onFinish() {
-                        Log.d("myTimer", "Finish!")
-                        MediaPlayer.create(applicationContext, R.raw.music).start()
-
+                        override fun onFinish() {
+                            Log.d("myTimer", "Finish!")
+                            MediaPlayer.create(applicationContext, R.raw.music).start()
+                        }
                     }
-                }
                 countDownTimer.start()
             } else {
                 countDownTimer.cancel()
