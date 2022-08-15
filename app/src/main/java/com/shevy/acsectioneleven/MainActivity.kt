@@ -1,10 +1,13 @@
 package com.shevy.acsectioneleven
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.Button
 import android.widget.SeekBar
 import android.widget.TextView
@@ -24,6 +27,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        supportActionBar?.title = "Cool Timer"
 
         isTimerOn = false
         button = binding.startStop
@@ -89,12 +94,34 @@ class MainActivity : AppCompatActivity() {
         textView.text = "$minutesString:$secondsString"
     }
 
-    private fun reset(){
+    private fun reset() {
         countDownTimer.cancel()
         button.text = "Start"
         timerSeekBar.isEnabled = true
         isTimerOn = false
         textView.text = "01:00"
         timerSeekBar.progress = 60
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.timer_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.action_settings -> {
+                startActivity(
+                    Intent(this, SettingsActivity::class.java)
+                )
+            }
+            R.id.action_about
+            -> {
+                startActivity(
+                    Intent(this, AboutActivity::class.java)
+                )
+            }
+        }
+        return true
     }
 }
