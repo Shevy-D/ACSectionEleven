@@ -11,9 +11,12 @@ import android.view.MenuItem
 import android.widget.Button
 import android.widget.SeekBar
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.PreferenceManager
 import com.shevy.acsectioneleven.databinding.ActivityMainBinding
+import java.lang.Exception
+import java.lang.NumberFormatException
 import kotlin.properties.Delegates
 
 class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceChangeListener {
@@ -144,9 +147,16 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
     }
 
     @SuppressLint("SetTextI18n")
-    private fun setIntervalFromSharedPreference(sharedPreferences: SharedPreferences){
-        defaultInterval = sharedPreferences.getString("default_interval", "30")!!.toInt()
-        updateTimer(defaultInterval.toLong()*1000)
+    private fun setIntervalFromSharedPreference(sharedPreferences: SharedPreferences) {
+
+        try {
+            defaultInterval = sharedPreferences.getString("default_interval", "30")!!.toInt()
+        } catch (nfe: NumberFormatException) {
+            Toast.makeText(this, "NumberFormatException happens", Toast.LENGTH_SHORT).show()
+        } catch (e: Exception) {
+            Toast.makeText(this, "Some error happens", Toast.LENGTH_SHORT).show()
+        }
+        updateTimer(defaultInterval.toLong() * 1000)
         timerSeekBar.progress = defaultInterval
     }
 
