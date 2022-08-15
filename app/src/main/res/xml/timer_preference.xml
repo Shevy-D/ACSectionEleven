@@ -8,10 +8,16 @@
         android:summaryOn="Sound Enabled"
         android:title="Enable Sound" />
 
-    <ListPreference android:title="Timer Melody"
-        android:key="timer_melody"
+    <ListPreference
         android:defaultValue="bell"
         android:entries="@array/pref_timer_melody_labels"
-        android:entryValues="@array/pref_timer_melody_values"/>
+        android:entryValues="@array/pref_timer_melody_values"
+        android:key="timer_melody"
+        android:title="Timer Melody" />
+
+    <EditTextPreference
+        android:defaultValue="20"
+        android:key="default_interval"
+        android:title="Default Interval" />
 
 </PreferenceScreen>

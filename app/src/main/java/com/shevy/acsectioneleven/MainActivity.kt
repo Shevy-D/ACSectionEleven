@@ -2,6 +2,7 @@ package com.shevy.acsectioneleven
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.content.SharedPreferences
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.CountDownTimer
@@ -15,13 +16,15 @@ import androidx.preference.PreferenceManager
 import com.shevy.acsectioneleven.databinding.ActivityMainBinding
 import kotlin.properties.Delegates
 
-class MainActivity : AppCompatActivity() {
-    lateinit var binding: ActivityMainBinding
+class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceChangeListener {
+    private lateinit var binding: ActivityMainBinding
     private lateinit var textView: TextView
-    var isTimerOn by Delegates.notNull<Boolean>()
+    private var isTimerOn by Delegates.notNull<Boolean>()
     lateinit var timerSeekBar: SeekBar
     lateinit var button: Button
     lateinit var countDownTimer: CountDownTimer
+    var defaultInterval by Delegates.notNull<Int>()
+    private lateinit var sharedPreferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,9 +37,10 @@ class MainActivity : AppCompatActivity() {
         button = binding.startStop
         timerSeekBar = binding.seekBar
         textView = binding.timer
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
 
         timerSeekBar.max = 600
-        timerSeekBar.progress = 60
+        setIntervalFromSharedPreference(sharedPreferences)
 
         updateTimer(timerSeekBar.progress.toLong() * 1000)
 
@@ -68,9 +72,14 @@ class MainActivity : AppCompatActivity() {
                                 PreferenceManager.getDefaultSharedPreferences(applicationContext)
                             if (sharedPreferences.getBoolean("enable_sound", true)) {
                                 when (sharedPreferences.getString("timer_melody", "bell")) {
-                                    "bell" -> MediaPlayer.create(applicationContext, R.raw.bell).start()
-                                    "kolokolchik" -> MediaPlayer.create(applicationContext, R.raw.kolokolchik).start()
-                                    "melody" -> MediaPlayer.create(applicationContext, R.raw.melody).start()
+                                    "bell" -> MediaPlayer.create(applicationContext, R.raw.bell)
+                                        .start()
+                                    "kolokolchik" -> MediaPlayer.create(
+                                        applicationContext,
+                                        R.raw.kolokolchik
+                                    ).start()
+                                    "melody" -> MediaPlayer.create(applicationContext, R.raw.melody)
+                                        .start()
                                 }
                             }
                             resetTimer()
@@ -81,6 +90,8 @@ class MainActivity : AppCompatActivity() {
                 resetTimer()
             }
         }
+
+        sharedPreferences.registerOnSharedPreferenceChangeListener(this)
     }
 
     @SuppressLint("SetTextI18n")
@@ -107,8 +118,7 @@ class MainActivity : AppCompatActivity() {
         button.text = "Start"
         timerSeekBar.isEnabled = true
         isTimerOn = false
-        textView.text = "01:00"
-        timerSeekBar.progress = 60
+        setIntervalFromSharedPreference(sharedPreferences)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -131,5 +141,23 @@ class MainActivity : AppCompatActivity() {
             }
         }
         return true
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun setIntervalFromSharedPreference(sharedPreferences: SharedPreferences){
+        defaultInterval = sharedPreferences.getString("default_interval", "30")!!.toInt()
+        updateTimer(defaultInterval.toLong()*1000)
+        timerSeekBar.progress = defaultInterval
+    }
+
+    override fun onSharedPreferenceChanged(p0: SharedPreferences?, p1: String?) {
+        if (p1 == "default_interval") {
+            setIntervalFromSharedPreference(sharedPreferences)
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        sharedPreferences.unregisterOnSharedPreferenceChangeListener(this)
     }
 }

@@ -1,9 +1,7 @@
 package com.shevy.acsectioneleven
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.MenuItem
-import androidx.core.app.NavUtils
+import androidx.appcompat.app.AppCompatActivity
 import com.shevy.acsectioneleven.databinding.ActivitySettingsBinding
 
 class SettingsActivity : AppCompatActivity() {

@@ -2,10 +2,7 @@ package com.shevy.acsectioneleven
 
 import android.content.SharedPreferences
 import android.os.Bundle
-import androidx.preference.CheckBoxPreference
-import androidx.preference.ListPreference
-import androidx.preference.Preference
-import androidx.preference.PreferenceFragmentCompat
+import androidx.preference.*
 
 
 class SettingsFragment : PreferenceFragmentCompat(),
@@ -13,9 +10,7 @@ class SettingsFragment : PreferenceFragmentCompat(),
     override fun onCreatePreferences(p0: Bundle?, p1: String?) {
         addPreferencesFromResource(R.xml.timer_preference)
 
-        val sharedPreferences = preferenceScreen
-            .sharedPreferences
-        val preferenceScreen = preferenceScreen
+        val sharedPreferences = preferenceScreen.sharedPreferences
         val count = preferenceScreen.preferenceCount
 
         for (i in 0 until count) {
@@ -35,7 +30,8 @@ class SettingsFragment : PreferenceFragmentCompat(),
             if (index >= 0) {
                 preference.summary = preference.entries[index]
             }
-
+        } else if (preference is EditTextPreference) {
+            preference.summary = value
         }
     }
 
