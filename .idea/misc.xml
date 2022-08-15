@@ -4,7 +4,9 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/dmitr/AndroidStudioProjects/ACSectionEleven/app/src/main/res/layout/activity_main.xml" value="0.2" />
+        <entry key="..\:/Users/dmitr/AndroidStudioProjects/ACSectionEleven/app/src/main/res/layout/activity_settings.xml" value="0.1" />
         <entry key="..\:/Users/dmitr/AndroidStudioProjects/ACSectionEleven/app/src/main/res/menu/timer_menu.xml" value="0.1" />
+        <entry key="..\:/Users/dmitr/AndroidStudioProjects/ACSectionEleven/app/src/main/res/xml/timer_preference.xml" value="0.1" />
       </map>
     </option>
   </component>

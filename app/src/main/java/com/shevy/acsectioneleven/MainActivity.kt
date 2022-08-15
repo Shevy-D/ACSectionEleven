@@ -5,13 +5,13 @@ import android.content.Intent
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.CountDownTimer
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Button
 import android.widget.SeekBar
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.preference.PreferenceManager
 import com.shevy.acsectioneleven.databinding.ActivityMainBinding
 import kotlin.properties.Delegates
 
@@ -64,13 +64,21 @@ class MainActivity : AppCompatActivity() {
                         }
 
                         override fun onFinish() {
-                            MediaPlayer.create(applicationContext, R.raw.music).start()
-                            reset()
+                            val sharedPreferences =
+                                PreferenceManager.getDefaultSharedPreferences(applicationContext)
+                            if (sharedPreferences.getBoolean("enable_sound", true)) {
+                                when (sharedPreferences.getString("timer_melody", "bell")) {
+                                    "bell" -> MediaPlayer.create(applicationContext, R.raw.bell).start()
+                                    "kolokolchik" -> MediaPlayer.create(applicationContext, R.raw.kolokolchik).start()
+                                    "melody" -> MediaPlayer.create(applicationContext, R.raw.melody).start()
+                                }
+                            }
+                            resetTimer()
                         }
                     }
                 countDownTimer.start()
             } else {
-                reset()
+                resetTimer()
             }
         }
     }
@@ -94,7 +102,7 @@ class MainActivity : AppCompatActivity() {
         textView.text = "$minutesString:$secondsString"
     }
 
-    private fun reset() {
+    private fun resetTimer() {
         countDownTimer.cancel()
         button.text = "Start"
         timerSeekBar.isEnabled = true
