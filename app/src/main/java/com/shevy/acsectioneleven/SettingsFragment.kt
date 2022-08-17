@@ -2,11 +2,14 @@ package com.shevy.acsectioneleven
 
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.widget.Toast
 import androidx.preference.*
+import java.lang.NumberFormatException
 
 
 class SettingsFragment : PreferenceFragmentCompat(),
-    SharedPreferences.OnSharedPreferenceChangeListener {
+    SharedPreferences.OnSharedPreferenceChangeListener,
+Preference.OnPreferenceChangeListener{
     override fun onCreatePreferences(p0: Bundle?, p1: String?) {
         addPreferencesFromResource(R.xml.timer_preference)
 
@@ -22,6 +25,9 @@ class SettingsFragment : PreferenceFragmentCompat(),
                 }
             }
         }
+
+        val preference = findPreference("default_interval")
+        preference.onPreferenceChangeListener = this
     }
 
     private fun setPreferenceLabel(preference: Preference, value: String) {
@@ -53,5 +59,20 @@ class SettingsFragment : PreferenceFragmentCompat(),
     override fun onDestroy() {
         super.onDestroy()
         preferenceScreen.sharedPreferences.unregisterOnSharedPreferenceChangeListener(this)
+    }
+
+    override fun onPreferenceChange(preference: Preference?, newValue: Any?): Boolean {
+        if (preference?.key == "default_interval") {
+            val defaultIntervalString = newValue.toString()
+
+            try {
+                val defaultInterval = Integer.parseInt(defaultIntervalString)
+            } catch (e: NumberFormatException) {
+                Toast.makeText(context, "Please enter an integer number", Toast.LENGTH_SHORT).show()
+                return false
+            }
+        }
+
+        return true
     }
 }
